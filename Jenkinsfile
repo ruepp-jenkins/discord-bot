@@ -35,7 +35,8 @@ pipeline {
                 sh 'printenv | sort -h'
                 sh "ls -lah ${WORKSPACE}/"
                 sh "ls -lah ${WORKSPACE}/source"
-                sh "docker run --rm -v ${PWD}:/ws ubuntu ls -lah /ws/workspace/"
+                sh 'pwd'
+                sh "docker run --rm -v ${PWD}:/ws ubuntu ls -lah /ws/workspace/ruepp_discord-bot_update-dotnet9/"
                 sh "docker run --rm -v ${WORKSPACE}:/ws ubuntu ls -lah /ws/"
                 sh "docker run --rm -v ${WORKSPACE}:/ws cyclonedx/cyclonedx-dotnet -o /ws /ws/source/DiscordBot.sln"
                 dependencyTrackPublisher artifact: env.WORKSPACE/bom.xml, projectName: env.JOB_NAME, projectVersion: env.BRANCH_NAME, synchronous: true
