@@ -31,7 +31,7 @@ pipeline {
         stage('DependencyTracker') {
             steps {
                 sh "docker run --rm -v /opt/docker/jenkins/jenkins_ws:/home/jenkins/workspace cyclonedx/cyclonedx-dotnet -o ${WORKSPACE} ${WORKSPACE}/source/DiscordBot.sln"
-                dependencyTrackPublisher artifact: bom.xml, projectName: env.JOB_NAME, projectVersion: env.BRANCH_NAME, synchronous: true
+                dependencyTrackPublisher artifact: 'bom.xml', projectName: env.JOB_NAME, projectVersion: env.BRANCH_NAME, synchronous: true
             }
         }
         stage('Build') {
@@ -49,7 +49,7 @@ pipeline {
                 link: env.BUILD_URL,
                 title: JOB_NAME,
                 webhookURL: DISCORD_WEBHOOK
-            // cleanWs()
+            cleanWs()
         }
     }
 }
