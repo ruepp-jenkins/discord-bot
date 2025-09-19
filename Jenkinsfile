@@ -26,17 +26,21 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: env.BRANCH_NAME, url: env.GIT_URL
-                stash name: 'scm', includes:'*'
+                stash name:'scm', includes:'*'
             }
         }
         stage('DependencyTracker') {
             steps {
+                unstash 'scm'
                 sh 'printenv | sort -h'
                 sh "ls -lah ${WORKSPACE}/"
                 sh "ls -lah ${WORKSPACE}/source"
-                unstash 'scm'
                 sh "docker run --rm -v ${WORKSPACE}:/ws ubuntu ls -lah /ws/"
-                sh "docker run --rm -v ${WORKSPACE}:/ws ubuntu ls -lah /ws/source/"
+                docker.image('ubuntu').inside{
+                    sh 'pwd'
+                    sh 'printenv | sort -h'
+                    sh 'ls -lah'
+                }
                 sh "docker run --rm -v ${WORKSPACE}:/ws cyclonedx/cyclonedx-dotnet -o /ws /ws/source/DiscordBot.sln"
                 dependencyTrackPublisher artifact: env.WORKSPACE/bom.xml, projectName: env.JOB_NAME, projectVersion: env.BRANCH_NAME, synchronous: true
             }
