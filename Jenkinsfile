@@ -34,11 +34,10 @@ pipeline {
                 sh './scripts/start.sh'
             }
         }
-        stage('dependencyTrackPublisher') {
+        stage('DependencyTracker') {
             steps {
-                sh 'ls -lah ${WORKSPACE}'
-                sh 'ls -lah ${WORKSPACE}/source/'
-                sh 'whoami'
+                sh 'docker run --rm -v ${WORKSPACE}:/${WORKSPACE} ubuntu ls -lah ${WORKSPACE}/'
+                sh 'docker run --rm -v ${WORKSPACE}:/${WORKSPACE} ubuntu ls -lah ${WORKSPACE}/source/'
                 sh 'docker run --rm -v ${WORKSPACE}:/${WORKSPACE} cyclonedx/cyclonedx-dotnet -o ${WORKSPACE}/bom.xml ${WORKSPACE}/source/DiscordBot.sln'
                 dependencyTrackPublisher artifact: env.WORKSPACE/bom.xml, projectName: env.JOB_NAME, projectVersion: env.BUILD_TAG, synchronous: true
             }
