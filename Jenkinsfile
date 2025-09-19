@@ -34,9 +34,9 @@ pipeline {
                 sh "ls -lah ${WORKSPACE}/../"
                 sh "ls -lah ${WORKSPACE}"
                 sh 'pwd'
-                sh "docker run --rm -v /home/jenkins/workspace:/home/jenkins/workspace ubuntu ls -lah /home/jenkins/workspace"
-                sh "docker run --rm -v /home/jenkins/workspace:/home/jenkins/workspace ubuntu ls -lah ${WORKSPACE}/jenkins_ws"
-                sh "docker run --rm -v /home/jenkins/workspace:/home/jenkins/workspace cyclonedx/cyclonedx-dotnet -o ${WORKSPACE} ${WORKSPACE}/source/DiscordBot.sln"
+                sh "docker run --rm -v /opt/docker/jenkins/jenkins_ws:/home/jenkins/workspace ubuntu ls -lah /home/jenkins/workspace"
+                sh "docker run --rm -v /opt/docker/jenkins/jenkins_ws:/home/jenkins/workspace ubuntu ls -lah ${WORKSPACE}/jenkins_ws"
+                sh "docker run --rm -v /opt/docker/jenkins/jenkins_ws:/home/jenkins/workspace cyclonedx/cyclonedx-dotnet -o ${WORKSPACE} ${WORKSPACE}/source/DiscordBot.sln"
                 dependencyTrackPublisher artifact: env.WORKSPACE/bom.xml, projectName: env.JOB_NAME, projectVersion: env.BRANCH_NAME, synchronous: true
             }
         }
