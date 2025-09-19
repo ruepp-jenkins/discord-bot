@@ -26,6 +26,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: env.BRANCH_NAME, url: env.GIT_URL
+                stash name: 'scm', includes:'*'
             }
         }
         stage('DependencyTracker') {
