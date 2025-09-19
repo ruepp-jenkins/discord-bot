@@ -39,7 +39,7 @@ pipeline {
                 sh 'ls -lah ${WORKSPACE}'
                 sh 'ls -lah ${WORKSPACE}/source/'
                 sh 'whoami'
-                sh 'docker run --rm -v ${WORKSPACE}:/ws cyclonedx/cyclonedx-dotnet -o /ws/bom.xml /ws/source/DiscordBot.sln'
+                sh 'docker run --rm -v ${WORKSPACE}:/${WORKSPACE} cyclonedx/cyclonedx-dotnet -o ${WORKSPACE}/bom.xml ${WORKSPACE}/source/DiscordBot.sln'
                 dependencyTrackPublisher artifact: env.WORKSPACE/bom.xml, projectName: env.JOB_NAME, projectVersion: env.BUILD_TAG, synchronous: true
             }
         }
