@@ -31,12 +31,14 @@ pipeline {
         }
         stage('DependencyTracker') {
             steps {
-                unstash 'scm'
                 sh 'printenv | sort -h'
                 sh "ls -lah ${WORKSPACE}/"
                 sh "ls -lah ${WORKSPACE}/source"
+                unstash 'scm'
                 sh "docker run --rm -v ${PWD}:/ws ubuntu ls -lah /ws/"
+                unstash 'scm'
                 sh "docker run --rm -v ${WORKSPACE}:/ws ubuntu ls -lah /ws/"
+                unstash 'scm'
                 sh "docker run --rm -v ${WORKSPACE}:/ws cyclonedx/cyclonedx-dotnet -o /ws /ws/source/DiscordBot.sln"
                 dependencyTrackPublisher artifact: env.WORKSPACE/bom.xml, projectName: env.JOB_NAME, projectVersion: env.BRANCH_NAME, synchronous: true
             }
