@@ -36,9 +36,7 @@ pipeline {
         }
         stage('dependencyTrackPublisher') {
             steps {
-                withCredentials([string(credentialsId: 'dependencychecker', variable: 'API_KEY')]) {
-                    dependencyTrackPublisher artifact: 'target/bom.xml', projectName: env.JOB_NAME, projectVersion: env.BUILD_TAG, synchronous: true, dependencyTrackApiKey: API_KEY
-                }
+                dependencyTrackPublisher artifact: env.WORKSPACE, projectName: env.JOB_NAME, projectVersion: env.BUILD_TAG, synchronous: true
             }
         }
     }
