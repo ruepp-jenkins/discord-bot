@@ -10,9 +10,7 @@ properties(
 
 pipeline {
     agent {
-        node {
-            label 'docker'
-        }
+        label 'docker'
     }
 
     environment {
@@ -28,7 +26,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: env.BRANCH_NAME, url: env.GIT_URL
-                stash name:'scm', includes:'*'
             }
         }
         stage('DependencyTracker') {
