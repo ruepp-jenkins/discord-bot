@@ -58,7 +58,7 @@ pipeline {
                 link: env.BUILD_URL,
                 title: JOB_NAME,
                 webhookURL: DISCORD_WEBHOOK
-            cleanWs()
+            // cleanWs()
         }
     }
 }
