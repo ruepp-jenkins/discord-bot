@@ -38,6 +38,7 @@ pipeline {
             steps {
                 sh 'ls -lah ${WORKSPACE}'
                 sh 'ls -lah ${WORKSPACE}/source/'
+                sh 'whoami'
                 sh 'docker run --rm -v ${WORKSPACE}:/source clonedx/cyclonedx-dotnet -o /source/bom.xml /source/DiscordBot.sln'
                 dependencyTrackPublisher artifact: env.WORKSPACE/bom.xml, projectName: env.JOB_NAME, projectVersion: env.BUILD_TAG, synchronous: true
             }

@@ -26,7 +26,3 @@ else
         -f Dockerfile \
         --push .
 fi
-
-# cleanup
-cd -
-scripts/docker_cleanup.sh
