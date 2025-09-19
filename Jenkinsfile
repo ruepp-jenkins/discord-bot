@@ -34,9 +34,6 @@ pipeline {
                 sh './scripts/start.sh'
             }
         }
-    }
-
-    stages {
         stage('dependencyTrackPublisher') {
             steps {
                 withCredentials([string(credentialsId: 'dependencychecker', variable: 'API_KEY')]) {
