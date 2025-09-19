@@ -33,7 +33,7 @@ pipeline {
         stage('DependencyTracker') {
             steps {
                 sh 'printenv | sort -h'
-                sh "ls -lah ${WORKSPACE}/"
+                sh "ls -lah ${WORKSPACE}/../"
                 sh "ls -lah ${WORKSPACE}/source"
                 sh 'pwd'
                 sh "docker run --rm -v ${PWD}:/ws ubuntu ls -lah /ws/workspace/ruepp_discord-bot_update-dotnet9/"
