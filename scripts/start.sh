@@ -2,8 +2,7 @@
 set -e
 echo "Starting build workflow"
 
-. scripts/git_release_version.sh
-scripts/docker_initialize.sh
+scripts/docker_inistialize.sh
 
 if [ -z "${VERSION}" ]; then
     echo "Version not set or not found"
