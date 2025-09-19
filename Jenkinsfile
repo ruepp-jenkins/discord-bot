@@ -33,10 +33,10 @@ pipeline {
                 sh 'printenv | sort -h'
                 sh "ls -lah ${WORKSPACE}/"
                 sh "ls -lah ${WORKSPACE}/source"
-                sh "docker run --rm -v ${WORKSPACE}:${WORKSPACE} ubuntu ls -lah ${WORKSPACE}/"
-                sh "docker run --rm -v ${WORKSPACE}:${WORKSPACE} ubuntu ls -lah ${WORKSPACE}/source/"
-                sh "docker run --rm -v ${WORKSPACE}:${WORKSPACE} cyclonedx/cyclonedx-dotnet -o ${WORKSPACE} ${WORKSPACE}/source/DiscordBot.sln"
-                dependencyTrackPublisher artifact: env.WORKSPACE/bom.xml, projectName: env.JOB_NAME, projectVersion: env.BUILD_TAG, synchronous: true
+                sh "docker run --rm -v ${WORKSPACE}:/ws ubuntu ls -lah /ws/"
+                sh "docker run --rm -v ${WORKSPACE}:/ws ubuntu ls -lah /ws/source/"
+                sh "docker run --rm -v ${WORKSPACE}:/ws cyclonedx/cyclonedx-dotnet -o /ws /ws/source/DiscordBot.sln"
+                dependencyTrackPublisher artifact: env.WORKSPACE/bom.xml, projectName: env.JOB_NAME, projectVersion: env.BRANCH_NAME, synchronous: true
             }
         }
         stage('Build') {
