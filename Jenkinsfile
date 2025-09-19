@@ -36,9 +36,9 @@ pipeline {
         }
         stage('DependencyTracker') {
             steps {
-                sh 'docker run --rm -v ${WORKSPACE}:/${WORKSPACE} ubuntu ls -lah ${WORKSPACE}/'
-                sh 'docker run --rm -v ${WORKSPACE}:/${WORKSPACE} ubuntu ls -lah ${WORKSPACE}/source/'
-                sh 'docker run --rm -v ${WORKSPACE}:/${WORKSPACE} cyclonedx/cyclonedx-dotnet -o ${WORKSPACE}/bom.xml ${WORKSPACE}/source/DiscordBot.sln'
+                sh 'docker run --rm -v ${WORKSPACE}:${WORKSPACE} ubuntu ls -lah ${WORKSPACE}/'
+                sh 'docker run --rm -v ${WORKSPACE}:${WORKSPACE} ubuntu ls -lah ${WORKSPACE}/source/'
+                sh 'docker run --rm -v ${WORKSPACE}:${WORKSPACE} cyclonedx/cyclonedx-dotnet -o ${WORKSPACE}/bom.xml ${WORKSPACE}/source/DiscordBot.sln'
                 dependencyTrackPublisher artifact: env.WORKSPACE/bom.xml, projectName: env.JOB_NAME, projectVersion: env.BUILD_TAG, synchronous: true
             }
         }
