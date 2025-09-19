@@ -38,8 +38,8 @@ pipeline {
             steps {
                 sh 'ls -lah ${WORKSPACE}'
                 sh 'ls -lah ${WORKSPACE}/source/'
-                //sh 'docker run --rm clonedx/cyclonedx-dotnet ${WORKSPACE}/source/DiscordBot.csproj'
-                dependencyTrackPublisher artifact: env.WORKSPACE, projectName: env.JOB_NAME, projectVersion: env.BUILD_TAG, synchronous: true
+                sh 'docker run --rm -v ${WORKSPACE}:/source -o /source/bom.xml clonedx/cyclonedx-dotnet /source/DiscordBot.sln'
+                dependencyTrackPublisher artifact: env.WORKSPACE/bom.xml, projectName: env.JOB_NAME, projectVersion: env.BUILD_TAG, synchronous: true
             }
         }
     }
