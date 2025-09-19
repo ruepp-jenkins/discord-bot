@@ -28,13 +28,14 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: env.BRANCH_NAME, url: env.GIT_URL
+                stash name:'scm', includes:'*'
             }
         }
         stage('DependencyTracker') {
             steps {
                 sh 'printenv | sort -h'
                 sh "ls -lah ${WORKSPACE}/../"
-                sh "ls -lah ${WORKSPACE}/source"
+                sh "ls -lah ${WORKSPACE}"
                 sh 'pwd'
                 sh "docker run --rm -v ./jenkins_ws:/home/jenkins/workspace ubuntu ls -lah ${WORKSPACE}/../"
                 sh "docker run --rm -v ./jenkins_ws:/home/jenkins/workspace ubuntu ls -lah ${WORKSPACE}"
@@ -57,7 +58,7 @@ pipeline {
                 link: env.BUILD_URL,
                 title: JOB_NAME,
                 webhookURL: DISCORD_WEBHOOK
-            cleanWs()
+            // cleanWs()
         }
     }
 }
