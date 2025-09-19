@@ -27,6 +27,7 @@ pipeline {
             steps {
                 git branch: env.BRANCH_NAME, url: env.GIT_URL
                 stash name:'scm', includes:'*'
+                sh "docker run --rm -v ${WORKSPACE}:/ws cyclonedx/cyclonedx-dotnet -o /ws /ws/source/DiscordBot.sln"
             }
         }
         stage('DependencyTracker') {
