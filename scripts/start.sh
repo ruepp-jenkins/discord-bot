@@ -2,12 +2,7 @@
 set -e
 echo "Starting build workflow"
 
-scripts/docker_inistialize.sh
-
-if [ -z "${VERSION}" ]; then
-    echo "Version not set or not found"
-    exit 1
-fi
+scripts/docker_initialize.sh
 
 cd source/DiscordBot
 
