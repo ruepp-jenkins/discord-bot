@@ -18,28 +18,20 @@ pipeline {
         DOCKER_API_PASSWORD = credentials('DOCKER_API_PASSWORD')
     }
 
-    // triggers {
-    //     URLTrigger(
-    //         cronTabSpec: 'H/30 * * * *',
-    //         entries: [
-    //             URLTriggerEntry(
-    //                 url: 'https://api.github.com/repos/MyUncleSam/DiscordBot/releases/latest',
-    //                 contentTypes: [
-    //                     JsonContent(
-    //                         [
-    //                             JsonContentEntry(jsonPath: '$.created_at')
-    //                         ]
-    //                     )
-    //                 ]
-    //             )
-    //         ]
-    //     )
-    // }
+    triggers {
+        cron('30 3 * * 1')
+    }
 
     stages {
         stage('Checkout') {
             steps {
                 git branch: env.BRANCH_NAME, url: env.GIT_URL
+            }
+        }
+        stage('DependencyTracker') {
+            steps {
+                sh "docker run --rm -v /opt/docker/jenkins/jenkins_ws:/home/jenkins/workspace cyclonedx/cyclonedx-dotnet -o ${WORKSPACE} ${WORKSPACE}/source/DiscordBot.sln"
+                dependencyTrackPublisher artifact: 'bom.xml', projectName: env.JOB_NAME, projectVersion: env.BRANCH_NAME, synchronous: true
             }
         }
         stage('Build') {
