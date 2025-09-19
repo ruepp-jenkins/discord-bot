@@ -36,6 +36,11 @@ pipeline {
         }
         stage('dependencyTrackPublisher') {
             steps {
+                sh 'ls -lah ${WORKSPACE}'
+                sh 'ls -lah ${WORKSPACE}/source/'
+                //sh 'docker run --rm clonedx/cyclonedx-dotnet ${WORKSPACE}/source/DiscordBot.csproj'                
+            }
+            steps {
                 dependencyTrackPublisher artifact: env.WORKSPACE, projectName: env.JOB_NAME, projectVersion: env.BUILD_TAG, synchronous: true
             }
         }
