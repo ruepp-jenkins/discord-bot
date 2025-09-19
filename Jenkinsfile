@@ -18,23 +18,9 @@ pipeline {
         DOCKER_API_PASSWORD = credentials('DOCKER_API_PASSWORD')
     }
 
-    // triggers {
-    //     URLTrigger(
-    //         cronTabSpec: 'H/30 * * * *',
-    //         entries: [
-    //             URLTriggerEntry(
-    //                 url: 'https://api.github.com/repos/MyUncleSam/DiscordBot/releases/latest',
-    //                 contentTypes: [
-    //                     JsonContent(
-    //                         [
-    //                             JsonContentEntry(jsonPath: '$.created_at')
-    //                         ]
-    //                     )
-    //                 ]
-    //             )
-    //         ]
-    //     )
-    // }
+    triggers {
+        cron('30 3 * * 1')
+    }
 
     stages {
         stage('Checkout') {
@@ -46,6 +32,16 @@ pipeline {
             steps {
                 sh 'chmod +x scripts/*.sh'
                 sh './scripts/start.sh'
+            }
+        }
+    }
+
+    stages {
+        stage('dependencyTrackPublisher') {
+            steps {
+                withCredentials([string(credentialsId: 'dependencychecker', variable: 'API_KEY')]) {
+                    dependencyTrackPublisher artifact: 'target/bom.xml', projectName: env.JOB_NAME, projectVersion: env.BUILD_TAG, synchronous: true, dependencyTrackApiKey: API_KEY
+                }
             }
         }
     }
