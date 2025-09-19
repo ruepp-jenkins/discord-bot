@@ -30,6 +30,7 @@ pipeline {
         }
         stage('DependencyTracker') {
             steps {
+                sh 'printenv | sort -h'
                 sh "ls -lah ${WORKSPACE}/"
                 sh "ls -lah ${WORKSPACE}/source"
                 sh "docker run --rm -v ${WORKSPACE}:${WORKSPACE} ubuntu ls -lah ${WORKSPACE}/"
