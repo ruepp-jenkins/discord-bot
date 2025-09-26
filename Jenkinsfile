@@ -45,7 +45,7 @@ pipeline {
                     projectName: env.JOB_NAME,
                     projectVersion: env.BUILD_NUMBER,
                     synchronous: false,
-                    projectProperties: [isLatest: true, parentName: "${env.DEPENDENCYTRACK_PROJECTNAME}"", tags: ['dotnet']]
+                    projectProperties: [isLatest: true, parentName: "${env.DEPENDENCYTRACK_PROJECTNAME}", tags: ['dotnet']]
                 )
             }
         }
