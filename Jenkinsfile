@@ -36,7 +36,7 @@ pipeline {
                   curl -sS -X POST "${DEPENDENCYTRACK_HOST}/api/v1/project" \
                     -H "Content-Type: application/json" \
                     -H "X-Api-Key: ${DEPENDENCYTRACK_API_TOKEN}" \
-                    -d '{"name":"${JOB_NAME}":"current"}'
+                    -d '{"name":"${JOB_NAME}","version":"current"}'
                 '''
                 sh "docker run --rm -v /opt/docker/jenkins/jenkins_ws:/home/jenkins/workspace cyclonedx/cyclonedx-dotnet -o ${WORKSPACE} ${WORKSPACE}/source/DiscordBot.sln"
                 dependencyTrackPublisher artifact: 'bom.xml', projectName: env.JOB_NAME, projectVersion: env.BUILD_NUMBER, synchronous: false, projectProperties: [isLatest: true, parentName: env.JOB_NAME, parentVersion: 'current', tags: ['dotnet']]
