@@ -17,7 +17,7 @@ pipeline {
         IMAGE_FULLNAME = 'ruepp/discord-bot'
         DOCKER_API_PASSWORD = credentials('DOCKER_API_PASSWORD')
         DEPENDENCYTRACK_HOST = 'http://172.20.89.2:8080'
-        DEPENDENCYTRACK_API_TOKEN('dependencychecker')
+        DEPENDENCYTRACK_API_TOKEN = credentials('dependencychecker')
     }
 
     triggers {
