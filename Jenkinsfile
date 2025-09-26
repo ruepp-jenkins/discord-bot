@@ -40,7 +40,7 @@ pipeline {
                     -d '{"name":"'"${DEPENDENCYTRACK_PROJECTNAME}"'","version":"current","classifier":"CONTAINER"}'
                 '''
                 sh "docker run --rm -v /opt/docker/jenkins/jenkins_ws:/home/jenkins/workspace cyclonedx/cyclonedx-dotnet -o ${WORKSPACE} ${WORKSPACE}/source/DiscordBot.sln"
-                dependencyTrackPublisher artifact: 'bom.xml', projectName: env.JOB_NAME, projectVersion: env.BUILD_NUMBER, synchronous: false, projectProperties: [isLatest: true, parentName: "$DEPENDENCYTRACK_PROJECTNAME", tags: ['dotnet']]
+                dependencyTrackPublisher artifact: 'bom.xml', projectName: env.JOB_NAME, projectVersion: env.BUILD_NUMBER, synchronous: false, projectProperties: [isLatest: true, parentName: env.DEPENDENCYTRACK_PROJECTNAME, tags: ['dotnet']]
             }
         }
         stage('Build') {
