@@ -30,6 +30,12 @@ pipeline {
                 git branch: env.BRANCH_NAME, url: env.GIT_URL
             }
         }
+        stage('Build') {
+            steps {
+                sh 'chmod +x scripts/*.sh'
+                sh './scripts/start.sh'
+            }
+        }
         stage('DependencyTracker') {
             steps {
                 script {
@@ -64,12 +70,6 @@ pipeline {
                         tags: ['dotnet']
                     ]
                 )
-            }
-        }
-        stage('Build') {
-            steps {
-                sh 'chmod +x scripts/*.sh'
-                sh './scripts/start.sh'
             }
         }
     }
