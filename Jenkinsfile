@@ -34,9 +34,6 @@ pipeline {
         stage('DependencyTracker') {
             steps {
                 sh '''
-                  echo "parent=${env.DEPENDENCYTRACK_PROJECTNAME}"
-                '''
-                sh '''
                   curl -sS -X PUT "${DEPENDENCYTRACK_HOST}/api/v1/project" \
                     -H "Content-Type: application/json" \
                     -H "X-Api-Key: ${DEPENDENCYTRACK_API_TOKEN}" \
@@ -48,7 +45,7 @@ pipeline {
                     projectName: env.JOB_NAME,
                     projectVersion: env.BUILD_NUMBER,
                     synchronous: false,
-                    projectProperties: [isLatest: true, parentName: env.DEPENDENCYTRACK_PROJECTNAME, tags: ['dotnet']]
+                    projectProperties: [isLatest: true, parentName: "${env.DEPENDENCYTRACK_PROJECTNAME}"", tags: ['dotnet']]
                 )
             }
         }
