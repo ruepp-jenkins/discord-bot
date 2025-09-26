@@ -18,6 +18,7 @@ pipeline {
         DOCKER_API_PASSWORD = credentials('DOCKER_API_PASSWORD')
         DEPENDENCYTRACK_HOST = 'http://172.20.89.2:8080'
         DEPENDENCYTRACK_API_TOKEN = credentials('dependencychecker')
+        DEPENDENCYTRACK_PROJECTNAME = 'discord-bot'
     }
 
     triggers {
@@ -36,10 +37,10 @@ pipeline {
                   curl -sS -X PUT "${DEPENDENCYTRACK_HOST}/api/v1/project" \
                     -H "Content-Type: application/json" \
                     -H "X-Api-Key: ${DEPENDENCYTRACK_API_TOKEN}" \
-                    -d '{"name":"'"${JOB_NAME}"'","version":"current","classifier":"CONTAINER"}'
+                    -d '{"name":"'"${DEPENDENCYTRACK_PROJECTNAME}"'","version":"current","classifier":"CONTAINER"}'
                 '''
                 sh "docker run --rm -v /opt/docker/jenkins/jenkins_ws:/home/jenkins/workspace cyclonedx/cyclonedx-dotnet -o ${WORKSPACE} ${WORKSPACE}/source/DiscordBot.sln"
-                dependencyTrackPublisher artifact: 'bom.xml', projectName: env.JOB_NAME, projectVersion: env.BUILD_NUMBER, synchronous: false, projectProperties: [isLatest: true, parentName: env.JOB_NAME, parentVersion: 'current', tags: ['dotnet']]
+                dependencyTrackPublisher artifact: 'bom.xml', projectName: env.JOB_NAME, projectVersion: env.BUILD_NUMBER, synchronous: false, projectProperties: [isLatest: true, parentName: env.DEPENDENCYTRACK_PROJECTNAME, tags: ['dotnet']]
             }
         }
         stage('Build') {
