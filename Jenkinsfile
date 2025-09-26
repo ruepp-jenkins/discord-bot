@@ -47,7 +47,7 @@ pipeline {
                     synchronous: false,
                     projectProperties: [
                         isLatest: true,
-                        parentName: env.DEPENDENCYTRACK_PROJECTNAME,
+                        parentName: DEPENDENCYTRACK_PROJECTNAME,
                         tags: ['dotnet']
                     ]
                 )
