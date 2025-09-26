@@ -33,7 +33,9 @@ pipeline {
         }
         stage('DependencyTracker') {
             steps {
-                sh 'echo "parent=${env.DEPENDENCYTRACK_PROJECTNAME}"'
+                sh '''
+                  echo "parent=${env.DEPENDENCYTRACK_PROJECTNAME}"
+                '''
                 sh '''
                   curl -sS -X PUT "${DEPENDENCYTRACK_HOST}/api/v1/project" \
                     -H "Content-Type: application/json" \
