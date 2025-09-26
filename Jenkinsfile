@@ -32,10 +32,10 @@ pipeline {
         }
         stage('DependencyTracker') {
             steps {
-                scripts {
+                script {
                     // root project body
                     def requestBody = groovy.json.JsonOutput.toJson([
-                        name      : "${env.JOB_NAME}",
+                        name: "${env.JOB_NAME}",
                         classifier: "CONTAINER"
                     ])
 
