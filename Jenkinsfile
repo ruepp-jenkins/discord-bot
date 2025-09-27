@@ -67,7 +67,7 @@ pipeline {
                     projectProperties: [
                         isLatest: true,
                         parentName: env.JOB_NAME,
-                        tags: ['dotnet']
+                        tags: ['image', 'dotnet']
                     ]
                 )
             }
