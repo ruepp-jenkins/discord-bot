@@ -36,6 +36,11 @@ pipeline {
                 sh './scripts/start.sh'
             }
         }
+        stage('SBOM generation') {
+            steps {
+                sh "docker run --rm -v /opt/docker/jenkins/jenkins_ws:/home/jenkins/workspace cyclonedx/cyclonedx-dotnet -o ${WORKSPACE} ${WORKSPACE}/source/DiscordBot.sln"
+            }
+        }
         stage('DependencyTracker') {
             steps {
                 script {
@@ -56,8 +61,6 @@ pipeline {
                         url: "${DEPENDENCYTRACK_HOST}/api/v1/project",
                         validResponseCodes: '200:299,409' // 409: project already exist
                 }
-                
-                sh "docker run --rm -v /opt/docker/jenkins/jenkins_ws:/home/jenkins/workspace cyclonedx/cyclonedx-dotnet -o ${WORKSPACE} ${WORKSPACE}/source/DiscordBot.sln"
 
                 dependencyTrackPublisher(
                     artifact: 'bom.xml',
